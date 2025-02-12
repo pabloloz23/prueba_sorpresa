@@ -1,0 +1,63 @@
+classDiagram
+    class Usuario {
+        <<Actor>>
+    }
+    
+    class Administrador {
+        <<Actor>>
+    }
+    
+    class EnrolarUsuario {
+        <<Use Case>>
+    }
+    
+    class VerificarUsuario {
+        <<Use Case>>
+    }
+    
+    class VerificarCalidadHuella {
+        <<Use Case>>
+        Algoritmos NFIQ/IQF
+        Segmentación FIG-11
+    }
+    
+    class VerificarAutenticidadHuella {
+        <<Use Case>>
+        CNN Anti-spoofing
+        Análisis luz blanca
+    }
+    
+    class ProcesarImagenHuella {
+        <<Use Case>>
+    }
+    
+    class RealizarIdentificacion1N {
+        <<Use Case>>
+    }
+    
+    class RealizarVerificacion11 {
+        <<Use Case>>
+    }
+    
+    class GestionarBaseDatos {
+        <<Use Case>>
+    }
+    
+    Usuario --> EnrolarUsuario
+    Usuario --> VerificarUsuario
+    Administrador --> GestionarBaseDatos
+    
+    EnrolarUsuario ..> VerificarCalidadHuella : <<include>>
+    EnrolarUsuario ..> VerificarAutenticidadHuella : <<include>>
+    EnrolarUsuario ..> ProcesarImagenHuella : <<include>>
+    EnrolarUsuario ..> GestionarBaseDatos : <<include>>
+    
+    VerificarUsuario ..> VerificarCalidadHuella : <<include>>
+    VerificarUsuario ..> VerificarAutenticidadHuella : <<include>>
+    VerificarUsuario ..> ProcesarImagenHuella : <<include>>
+    
+    VerificarUsuario ..> RealizarIdentificacion1N : <<extend>>
+    VerificarUsuario ..> RealizarVerificacion11 : <<extend>>
+    
+    VerificarCalidadHuella ..> ProcesarImagenHuella : <<include>>
+    VerificarAutenticidadHuella ..> ProcesarImagenHuella : <<include>>
