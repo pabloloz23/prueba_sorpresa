@@ -1,0 +1,75 @@
+classDiagram
+    class Cerradura {
+        -String estado
+        -String ID
+        +desbloquear()
+        +bloquear()
+    }
+
+    class ModuloMecanico {
+        -Boolean estadoBloqueo
+        -Float desgaste
+        +activarBloqueo()
+        +desactivarBloqueo()
+    }
+
+    class ModuloElectronico {
+        -Int velocidadMotor
+        -String posicionPestillo
+        +iniciarMotor()
+        +detenerMotor()
+        +leerPosicion()
+    }
+
+    class ModuloComunicaciones {
+        -String protocolo
+        -Boolean estadoConexion
+        +enviarDatos()
+        +recibirDatos()
+    }
+
+    class PlataformaSeguridad {
+        -List~Usuario~ listaUsuarios
+        -List~Cerradura~ listaCerraduras
+        +autenticarUsuario()
+        +enviarOrden()
+        +generarInforme()
+    }
+
+    class Usuario {
+        -String nombre
+        -String ID
+        -Credencial credencial
+        +solicitarAcceso()
+    }
+
+    class Credencial {
+        <<abstract>>
+        -String tipo
+        -String valor
+    }
+
+    class TarjetaRFID {
+        -String numeroSerie
+    }
+
+    class CredencialMovil {
+        -String tokenBluetooth
+    }
+
+    class Biometria {
+        -String tipoHuella
+    }
+
+    Cerradura *-- ModuloMecanico
+    Cerradura *-- ModuloElectronico
+    Cerradura *-- ModuloComunicaciones
+    
+    PlataformaSeguridad --> "1..*" Cerradura
+    PlataformaSeguridad --> "1..*" Usuario
+    
+    Usuario --> "1" Credencial
+    
+    Credencial <|-- TarjetaRFID
+    Credencial <|-- CredencialMovil
+    Credencial <|-- Biometria

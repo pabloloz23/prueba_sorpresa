@@ -1,0 +1,78 @@
+stateDiagram-v2
+    [*] --> InicioSolicitud
+    
+    state "Solicitud de Acceso" as InicioSolicitud {
+        [*] --> SeleccionMetodo
+        state "Selección Método Autenticación" as SeleccionMetodo {
+            [*] --> MetodoRFID
+            [*] --> MetodoMovil
+            [*] --> MetodoBiometria
+        }
+        MetodoRFID --> LecturaCredencial
+        MetodoMovil --> LecturaCredencial
+        MetodoBiometria --> LecturaCredencial
+        state "Lectura de Credencial" as LecturaCredencial
+        LecturaCredencial --> PreparacionSolicitud
+        state "Preparación de Solicitud" as PreparacionSolicitud
+    }
+    
+    InicioSolicitud --> TransmisionSolicitud: Envío seguro
+    
+    state "Recepción y Verificación" as TransmisionSolicitud {
+        [*] --> ValidacionInicial
+        state "Validación Inicial" as ValidacionInicial {
+            [*] --> VerificarFormato
+            VerificarFormato --> VerificarIntegridad
+        }
+        ValidacionInicial --> ProcesoAutenticacion
+        state "Proceso de Autenticación" as ProcesoAutenticacion {
+            [*] --> VerificarCredencial
+            VerificarCredencial --> VerificarPermisos
+            VerificarPermisos --> VerificarVigencia
+        }
+    }
+    
+    TransmisionSolicitud --> DecisionAutenticacion
+    
+    state "Decisión de Autenticación" as DecisionAutenticacion {
+        [*] --> EvaluacionFinal
+        EvaluacionFinal --> ResultadoAutenticacion
+        state choice <<choice>>
+        ResultadoAutenticacion --> choice
+        choice --> ProcesoError: [Fallo]
+        choice --> ProcesoExito: [Éxito]
+    }
+    
+    state "Proceso de Error" as ProcesoError {
+        [*] --> RegistrarError
+        RegistrarError --> NotificarError
+        NotificarError --> [*]
+    }
+    
+    ProcesoError --> [*]
+    
+    state "Proceso de Desbloqueo" as ProcesoExito {
+        [*] --> IniciarModulos
+        state "Activación de Módulos" as IniciarModulos {
+            [*] --> IniciarElectronico
+            IniciarElectronico --> VerificarMotor
+            VerificarMotor --> IniciarMecanico
+            IniciarMecanico --> VerificarPestillo
+            VerificarPestillo --> IniciarComunicaciones
+        }
+        IniciarModulos --> MonitorizarDesbloqueo
+        state "Monitorización" as MonitorizarDesbloqueo {
+            [*] --> VerificarPosicion
+            VerificarPosicion --> ConfirmarDesbloqueo
+        }
+    }
+    
+    ProcesoExito --> ConfirmacionFinal
+    
+    state "Confirmación Final" as ConfirmacionFinal {
+        [*] --> RegistrarAcceso
+        RegistrarAcceso --> NotificarExito
+        NotificarExito --> ActualizarEstado
+    }
+    
+    ConfirmacionFinal --> [*]
