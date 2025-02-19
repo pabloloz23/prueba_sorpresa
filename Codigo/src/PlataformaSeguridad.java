@@ -4,13 +4,11 @@ public class PlataformaSeguridad {
     private List<Usuario> listaUsuarios;
     private List<Cerradura> listaCerraduras;
 
-    // Constructor
     public PlataformaSeguridad(List<Usuario> listaUsuarios, List<Cerradura> listaCerraduras) {
         this.listaUsuarios = listaUsuarios;
         this.listaCerraduras = listaCerraduras;
     }
 
-    // Método para autenticar un usuario mediante su ID y credencial
     public boolean autenticarUsuario(String usuarioID, String credencial) {
         for (Usuario usuario : listaUsuarios) {
             if (usuario.getID().equals(usuarioID) && usuario.getCredencial().validar(credencial)) {
