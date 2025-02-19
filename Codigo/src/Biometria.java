@@ -1,18 +1,8 @@
 public class Biometria extends Credencial {
 
-    private String tipoHuella;
-
-    public Biometria(String tipo, String tipoHuella) {
-        super(tipo);
-        this.tipoHuella = tipoHuella;
-    }
-
-    public String getTipoHuella() {
-        return tipoHuella;
-    }
-
-    public void setTipoHuella(String tipoHuella) {
-        this.tipoHuella = tipoHuella;
+    public Biometria(String tipo, String valor) {
+        this.tipo = tipo;
+        this.valor = valor;
     }
 
     public String capturarHuella() {
@@ -22,10 +12,9 @@ public class Biometria extends Credencial {
 
     public boolean verificarHuella(String huellaCapturada) {
         System.out.println("Simulando la verificación de huella...");
-        return huellaCapturada != null && huellaCapturada.equals(tipoHuella);
+        return huellaCapturada != null && huellaCapturada.equals(valor);
     }
 
-    @Override
     public boolean validar() {
         String huellaCapturada = capturarHuella();
         boolean resultado = verificarHuella(huellaCapturada);
